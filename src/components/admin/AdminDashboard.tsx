@@ -532,6 +532,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite, on
   };
 
   // --- SERVICE MANAGEMENT HANDLERS ---
+  const handleOpenNewService = () => {
+    setEditingServiceId(null);
+    setServiceForm({
+      id: '',
+      name: '',
+      shortDesc: '',
+      fullDesc: '',
+      ctaText: 'Request This Service',
+      iconName: 'Globe',
+      badge: 'New Service',
+      imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
+      benefits: 'Custom tailored strategy, Fast turnaround, Dedicated support',
+      features: 'Initial consultation, Implementation & deployment, Continuous updates',
+    });
+    setIsServiceModalOpen(true);
+  };
+
   const handleOpenEditService = (svc: ServiceItem) => {
     setEditingServiceId(svc.id);
     setServiceForm({
@@ -583,23 +600,41 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite, on
       .map((f) => f.trim())
       .filter(Boolean);
 
-    const targetId = editingServiceId || `service-${Date.now()}`;
-    const updatedServiceItem: ServiceItem = {
+    const generatedSlug = serviceForm.name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)+/g, '');
+
+    const targetId = editingServiceId || `service-${generatedSlug || Date.now()}`;
+    const serviceItemData: ServiceItem = {
       id: targetId,
       name: serviceForm.name.trim(),
       shortDesc: serviceForm.shortDesc.trim(),
-      fullDesc: serviceForm.fullDesc.trim(),
-      ctaText: serviceForm.ctaText.trim(),
-      iconName: serviceForm.iconName,
+      fullDesc: serviceForm.fullDesc.trim() || serviceForm.shortDesc.trim(),
+      ctaText: serviceForm.ctaText.trim() || 'Request This Service',
+      iconName: serviceForm.iconName || 'Globe',
       badge: serviceForm.badge.trim() || undefined,
       imageUrl: serviceForm.imageUrl.trim() || undefined,
       benefits: benefitsArr.length ? benefitsArr : ['Custom digital solutions', 'Fast delivery'],
       features: featuresArr.length ? featuresArr : ['Dedicated support'],
     };
 
-    const updated = AdminStore.updateService(updatedServiceItem);
-    setConfig(updated);
+    if (editingServiceId) {
+      const updated = AdminStore.updateService(serviceItemData);
+      setConfig(updated);
+    } else {
+      const updated = AdminStore.addService(serviceItemData);
+      setConfig(updated);
+    }
+
     setIsServiceModalOpen(false);
+  };
+
+  const handleDeleteService = (id: string) => {
+    if (window.confirm('Are you sure you want to delete this service?')) {
+      const updated = AdminStore.deleteService(id);
+      setConfig(updated);
+    }
   };
 
   // --- TRAINING FLYER IMAGE HANDLER ---
@@ -1876,11 +1911,20 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite, on
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h3 className="text-xl font-bold text-white">Services Directory (8 Core Solutions)</h3>
+                <h3 className="text-xl font-bold text-white">Services Directory ({config.services.length} Solutions)</h3>
                 <p className="text-xs text-slate-400">
-                  Upload cover images and update service details displayed on the public Services section.
+                  Create new services, upload cover images, and update service details displayed on the public website.
                 </p>
               </div>
+
+              <button
+                type="button"
+                onClick={handleOpenNewService}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs shadow-md transition-all cursor-pointer self-start sm:self-auto"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Create New Service</span>
+              </button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1925,17 +1969,27 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite, on
                   </div>
 
                   <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                    <span className="text-[11px] text-slate-400 font-mono">
+                    <span className="text-[11px] text-slate-400 font-mono truncate max-w-[150px]">
                       CTA: {svc.ctaText}
                     </span>
-                    <button
-                      type="button"
-                      onClick={() => handleOpenEditService(svc)}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold shadow-md transition-all cursor-pointer"
-                    >
-                      <Edit3 className="w-3.5 h-3.5" />
-                      <span>Edit Service & Image</span>
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenEditService(svc)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold shadow-md transition-all cursor-pointer"
+                      >
+                        <Edit3 className="w-3.5 h-3.5" />
+                        <span>Edit</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteService(svc.id)}
+                        className="p-1.5 rounded-xl bg-rose-950/40 border border-rose-900/60 text-rose-400 hover:bg-rose-900/60 cursor-pointer"
+                        title="Delete Service"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -2732,10 +2786,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite, on
             <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
               <div>
                 <h4 className="text-lg font-bold text-white">
-                  Edit Service & Cover Image
+                  {editingServiceId ? 'Edit Service & Cover Image' : 'Create New Service & Cover Image'}
                 </h4>
                 <p className="text-xs text-slate-400">
-                  Update service details, badge, and upload high-resolution cover image for public view.
+                  {editingServiceId
+                    ? 'Update service details, badge, and upload high-resolution cover image for public view.'
+                    : 'Add a new service package to your agency portfolio with custom cover image and features.'}
                 </p>
               </div>
               <button
@@ -2890,7 +2946,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite, on
                   type="submit"
                   className="px-6 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold shadow-md cursor-pointer"
                 >
-                  Save Service Changes
+                  {editingServiceId ? 'Save Service Changes' : 'Create & Publish Service'}
                 </button>
               </div>
             </form>

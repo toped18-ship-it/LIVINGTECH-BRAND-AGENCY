@@ -174,3 +174,30 @@ test('AdminStore updates service cover images and training program flyer', () =>
   });
   assert.equal(updatedTraining.youthTraining.imageUrl, 'https://example.com/youth-training-flyer.jpg');
 });
+
+test('AdminStore creates new custom service with images and deletes it', () => {
+  const customService = {
+    id: 'service-custom-digital-consulting',
+    name: 'Custom Digital Transformation Consulting',
+    shortDesc: 'Strategic IT advisory for enterprises in Kogi State.',
+    fullDesc: 'End-to-end digital transformation consulting.',
+    ctaText: 'Book Consultation',
+    iconName: 'Briefcase',
+    badge: 'Enterprise',
+    imageUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+    benefits: ['Expert guidance', 'Workflow automation'],
+    features: ['Process auditing', 'Tech stack selection'],
+  };
+
+  AdminStore.addService(customService);
+  const configAfterAdd = AdminStore.getConfig();
+  const addedService = configAfterAdd.services.find((s) => s.id === 'service-custom-digital-consulting');
+  assert.ok(addedService);
+  assert.equal(addedService?.name, 'Custom Digital Transformation Consulting');
+  assert.ok(addedService?.imageUrl?.startsWith('data:image/png;base64,'));
+
+  // Clean up
+  AdminStore.deleteService('service-custom-digital-consulting');
+  const finalConfig = AdminStore.getConfig();
+  assert.equal(finalConfig.services.some((s) => s.id === 'service-custom-digital-consulting'), false);
+});
