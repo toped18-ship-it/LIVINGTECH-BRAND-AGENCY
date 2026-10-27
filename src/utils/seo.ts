@@ -480,6 +480,18 @@ export function applyServiceSEOContext(serviceId: string | null): () => void {
     metaDesc.setAttribute('content', serviceMeta.metaDescription);
   }
 
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  if (ogTitle) ogTitle.setAttribute('content', serviceMeta.metaTitle);
+
+  const ogDesc = document.querySelector('meta[property="og:description"]');
+  if (ogDesc) ogDesc.setAttribute('content', serviceMeta.metaDescription);
+
+  const twTitle = document.querySelector('meta[name="twitter:title"]');
+  if (twTitle) twTitle.setAttribute('content', serviceMeta.metaTitle);
+
+  const twDesc = document.querySelector('meta[name="twitter:description"]');
+  if (twDesc) twDesc.setAttribute('content', serviceMeta.metaDescription);
+
   // Update or inject dynamic JSON-LD snippet for this specific context
   if (!activeScript) {
     activeScript = document.createElement('script');
