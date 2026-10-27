@@ -152,3 +152,25 @@ test('AdminStore manages portfolio items with uploaded images and client metadat
   const finalConfig = AdminStore.getConfig();
   assert.equal(finalConfig.portfolio.some((p) => p.id === 'test-client-project'), false);
 });
+
+test('AdminStore updates service cover images and training program flyer', () => {
+  const currentConfig = AdminStore.getConfig();
+  const firstService = currentConfig.services[0];
+  assert.ok(firstService);
+
+  const updatedService = {
+    ...firstService,
+    imageUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+  };
+
+  AdminStore.updateService(updatedService);
+  const configAfterServiceUpdate = AdminStore.getConfig();
+  const serviceInStore = configAfterServiceUpdate.services.find((s) => s.id === firstService.id);
+  assert.equal(serviceInStore?.imageUrl, updatedService.imageUrl);
+
+  // Update training flyer
+  const updatedTraining = AdminStore.updateTraining({
+    imageUrl: 'https://example.com/youth-training-flyer.jpg',
+  });
+  assert.equal(updatedTraining.youthTraining.imageUrl, 'https://example.com/youth-training-flyer.jpg');
+});

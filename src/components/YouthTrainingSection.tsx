@@ -239,31 +239,51 @@ export const YouthTrainingSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Curriculum Tracks / Syllabus */}
-            <div className="lg:col-span-5 bg-slate-950/80 border border-slate-800 rounded-2xl p-6">
-              <h4 className="text-sm font-bold uppercase tracking-wider text-white mb-4 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-cyan-400" />
-                Training Modules Covered
-              </h4>
-              <ul className="space-y-3">
-                {training.categories.map((cat, idx) => (
-                  <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-300">
-                    <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
-                    <span>{cat}</span>
-                  </li>
-                ))}
-              </ul>
+            {/* Curriculum Tracks / Syllabus & Promotional Flyer Image */}
+            <div className="lg:col-span-5 space-y-4">
+              {training.imageUrl && (
+                <div className="rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 shadow-xl group relative">
+                  <div className="relative h-48 sm:h-56 w-full">
+                    <img
+                      src={training.imageUrl}
+                      alt="Youth Skill Acquisition Promotional Flyer"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80" />
+                    <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs text-white">
+                      <span className="font-semibold bg-emerald-950/90 text-emerald-300 border border-emerald-800/80 px-2.5 py-0.5 rounded-full">
+                        Official Cohort Flyer
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
 
-              <div className="mt-6 pt-4 border-t border-slate-800">
-                <a
-                  href={whatsappEnrollUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 font-semibold text-xs sm:text-sm transition-all"
-                >
-                  <MessageSquare className="w-4 h-4 text-emerald-400" />
-                  <span>Enquire via WhatsApp</span>
-                </a>
+              <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-6">
+                <h4 className="text-sm font-bold uppercase tracking-wider text-white mb-4 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-cyan-400" />
+                  Training Modules Covered
+                </h4>
+                <ul className="space-y-3">
+                  {training.categories.map((cat, idx) => (
+                    <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-300">
+                      <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+                      <span>{cat}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-6 pt-4 border-t border-slate-800">
+                  <a
+                    href={whatsappEnrollUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 font-semibold text-xs sm:text-sm transition-all"
+                  >
+                    <MessageSquare className="w-4 h-4 text-emerald-400" />
+                    <span>Enquire via WhatsApp</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>

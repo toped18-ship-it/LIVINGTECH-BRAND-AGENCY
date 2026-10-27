@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight, MessageSquare, Sparkles, Code2, Palette, Laptop, CheckCircle2, ChevronDown } from 'lucide-react';
-import { BUSINESS_CONFIG } from '../config/business';
+import { BUSINESS_CONFIG, BusinessConfig } from '../config/business';
+import { AdminStore } from '../services/adminStore';
 import { getWhatsAppServiceUrl } from '../utils/whatsapp';
 
 interface HeroProps {
@@ -8,7 +9,16 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
+  const [config, setConfig] = useState<BusinessConfig>(() => AdminStore.getConfig());
   const whatsappUrl = getWhatsAppServiceUrl('general');
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      setConfig(AdminStore.getConfig());
+    };
+    window.addEventListener('livingtech_config_updated', handleUpdate);
+    return () => window.removeEventListener('livingtech_config_updated', handleUpdate);
+  }, []);
 
   return (
     <section
@@ -103,6 +113,18 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
                   livingtech.name.ng
                 </div>
               </div>
+
+              {/* Optional Custom Hero Banner Showcase Image */}
+              {config.heroBannerUrl && (
+                <div className="relative h-44 rounded-xl overflow-hidden mb-4 border border-slate-800/80 shadow-md">
+                  <img
+                    src={config.heroBannerUrl}
+                    alt="LivingTech Showcase Banner"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+                </div>
+              )}
 
               {/* Service Matrix Highlights */}
               <div className="space-y-3">

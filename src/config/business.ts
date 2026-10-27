@@ -15,6 +15,7 @@ export interface ServiceItem {
   benefits: string[];
   features: string[];
   badge?: string;
+  imageUrl?: string;
 }
 
 export interface PortfolioItem {
@@ -62,6 +63,7 @@ export interface TrainingProgramConfig {
   dates: string;
   location: string;
   trainingFormats: string[];
+  imageUrl?: string;
 }
 
 export interface BusinessConfig {
@@ -72,6 +74,8 @@ export interface BusinessConfig {
   ownerName: string;
   ownerRole: string;
   positioning: string;
+  founderAvatarUrl?: string;
+  heroBannerUrl?: string;
   aboutCopy: {
     heading: string;
     paragraphs: string[];
@@ -122,6 +126,8 @@ export const BUSINESS_CONFIG: BusinessConfig = {
   ownerRole: 'Website Designer | Graphic Designer | Digital Solutions Developer',
   positioning:
     'A digital solutions and creative technology brand helping individuals, businesses, schools, churches, and organizations establish a stronger digital presence and use technology effectively.',
+  founderAvatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
+  heroBannerUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
   
   aboutCopy: {
     heading: 'Technology Meets Creativity.',
@@ -153,6 +159,7 @@ export const BUSINESS_CONFIG: BusinessConfig = {
       fullDesc: 'Modern, high-performance, and responsive web platforms built with precision, search optimization, and user-centric architecture.',
       ctaText: 'Build My Website',
       iconName: 'Globe',
+      imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
       benefits: [
         'Fast loading & mobile optimized',
         'Custom layout tailored to your audience',
@@ -177,6 +184,7 @@ export const BUSINESS_CONFIG: BusinessConfig = {
       fullDesc: 'Custom software applications, educational management systems, and tailored digital utilities that automate workflows.',
       ctaText: 'Build My Application',
       iconName: 'CodeXml',
+      imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80',
       benefits: [
         'Streamlined workflow automation',
         'Intuitive interface design',
@@ -200,6 +208,7 @@ export const BUSINESS_CONFIG: BusinessConfig = {
       fullDesc: 'Cohesive brand identities, high-impact marketing visuals, flyers, cards, and banners crafted to make your brand unforgettable.',
       ctaText: 'Request a Design',
       iconName: 'Palette',
+      imageUrl: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&w=800&q=80',
       benefits: [
         'Distinctive and cohesive identity',
         'Print-ready & high-resolution digital assets',
@@ -226,6 +235,7 @@ export const BUSINESS_CONFIG: BusinessConfig = {
       ctaText: 'Enroll for Training',
       iconName: 'GraduationCap',
       badge: 'Youth Program Available',
+      imageUrl: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80',
       benefits: [
         'Practical hands-on computer sessions',
         'Beginner-friendly step-by-step curriculum',
@@ -250,6 +260,7 @@ export const BUSINESS_CONFIG: BusinessConfig = {
       fullDesc: 'Compelling promotional copy, social media creative, visual assets, and content planning that elevate your brand voice.',
       ctaText: 'Create My Content',
       iconName: 'PenTool',
+      imageUrl: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80',
       benefits: [
         'Consistent voice across marketing channels',
         'Audience-centric visual storytelling',
@@ -271,6 +282,7 @@ export const BUSINESS_CONFIG: BusinessConfig = {
       fullDesc: 'Setup and integration of essential online tools: professional business emails, WhatsApp Business, Google presence, forms, and consulting.',
       ctaText: 'Grow My Business',
       iconName: 'Briefcase',
+      imageUrl: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80',
       benefits: [
         'Professional business credibility',
         'Automated customer inquiries',
@@ -294,6 +306,7 @@ export const BUSINESS_CONFIG: BusinessConfig = {
       fullDesc: 'Empower primary, secondary, and higher educational institutions with dedicated websites, learning portals, and administrative tools.',
       ctaText: 'Digitize My School',
       iconName: 'School',
+      imageUrl: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=800&q=80',
       benefits: [
         'Structured digital records & communication',
         'Parent, student, and teacher accessibility',
@@ -315,6 +328,7 @@ export const BUSINESS_CONFIG: BusinessConfig = {
       fullDesc: 'Inspiring ministry websites, event graphics, sermon/media resources, and digital platforms to reach congregation and mission fields.',
       ctaText: 'Build My Ministry Website',
       iconName: 'Church',
+      imageUrl: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=800&q=80',
       benefits: [
         'Dignified and inspiring visual design',
         'Effective event and service promotion',
@@ -359,6 +373,7 @@ export const BUSINESS_CONFIG: BusinessConfig = {
       'In-Person (LivingTech Training Hub, Abocho)',
       'Hybrid / Guided Digital Sessions',
     ],
+    imageUrl: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80',
   },
 
   portfolio: [

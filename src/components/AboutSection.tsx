@@ -12,7 +12,8 @@ import {
   Share2,
   Check,
 } from 'lucide-react';
-import { BUSINESS_CONFIG } from '../config/business';
+import { BUSINESS_CONFIG, BusinessConfig } from '../config/business';
+import { AdminStore } from '../services/adminStore';
 import { getWhatsAppServiceUrl } from '../utils/whatsapp';
 import { copyToClipboard, getSectionShareUrl } from '../utils/shareUtils';
 
@@ -22,7 +23,16 @@ interface AboutSectionProps {
 
 export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenQuoteModal }) => {
   const [copiedSection, setCopiedSection] = React.useState(false);
+  const [config, setConfig] = React.useState<BusinessConfig>(() => AdminStore.getConfig());
   const whatsappUrl = getWhatsAppServiceUrl('general');
+
+  React.useEffect(() => {
+    const handleUpdate = () => {
+      setConfig(AdminStore.getConfig());
+    };
+    window.addEventListener('livingtech_config_updated', handleUpdate);
+    return () => window.removeEventListener('livingtech_config_updated', handleUpdate);
+  }, []);
 
   const handleCopySectionLink = async () => {
     const url = getSectionShareUrl('about');
@@ -127,15 +137,25 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenQuoteModal }) 
             <div className="relative rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-slate-800 p-6 sm:p-8 shadow-2xl">
               {/* Profile Header */}
               <div className="flex items-center gap-4 pb-6 border-b border-slate-800">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-700 flex items-center justify-center text-slate-950 font-black text-2xl shadow-lg shadow-cyan-500/20">
-                  TO
-                </div>
+                {config.founderAvatarUrl ? (
+                  <div className="w-16 h-16 rounded-2xl overflow-hidden border border-cyan-500/40 shadow-lg shadow-cyan-500/20 shrink-0">
+                    <img
+                      src={config.founderAvatarUrl}
+                      alt={config.ownerName}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-700 flex items-center justify-center text-slate-950 font-black text-2xl shadow-lg shadow-cyan-500/20 shrink-0">
+                    TO
+                  </div>
+                )}
                 <div>
                   <div className="text-[11px] font-mono uppercase tracking-wider text-cyan-400">
                     Founder & Lead Developer
                   </div>
                   <h3 className="text-xl font-extrabold text-white">
-                    {BUSINESS_CONFIG.ownerName}
+                    {config.ownerName}
                   </h3>
                   <div className="flex items-center gap-1.5 text-xs text-slate-400 mt-0.5">
                     <MapPin className="w-3.5 h-3.5 text-cyan-400 shrink-0" />

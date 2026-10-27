@@ -21,6 +21,7 @@ import {
   Search,
 } from 'lucide-react';
 import { BUSINESS_CONFIG, ServiceItem } from '../config/business';
+import { AdminStore } from '../services/adminStore';
 import { getWhatsAppServiceUrl, WhatsAppTopic } from '../utils/whatsapp';
 import { SERVICE_SEO_REGISTRY, applyServiceSEOContext, BASE_URL } from '../utils/seo';
 
@@ -51,10 +52,22 @@ const TOPIC_MAP: Record<string, WhatsAppTopic> = {
 };
 
 export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServiceForQuote }) => {
+  const [servicesList, setServicesList] = useState<ServiceItem[]>(
+    () => AdminStore.getConfig().services
+  );
   const [expandedServiceId, setExpandedServiceId] = useState<string | null>(null);
   const [activeContextId, setActiveContextId] = useState<string | null>(null);
   const [showJsonLdId, setShowJsonLdId] = useState<string | null>(null);
   const [copiedLink, setCopiedLink] = useState(false);
+
+  // Sync services with adminStore updates
+  useEffect(() => {
+    const handleConfigUpdate = () => {
+      setServicesList(AdminStore.getConfig().services);
+    };
+    window.addEventListener('livingtech_config_updated', handleConfigUpdate);
+    return () => window.removeEventListener('livingtech_config_updated', handleConfigUpdate);
+  }, []);
 
   // Sync hash with active service context on mount & hashchange
   useEffect(() => {
@@ -267,9 +280,9 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
           </div>
         )}
 
-        {/* 8 Services Grid with Microdata and Anchors */}
+        {/* Services Grid with Microdata and Cover Images */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {BUSINESS_CONFIG.services.map((service: ServiceItem) => {
+          {servicesList.map((service: ServiceItem) => {
             const IconComponent = ICON_MAP[service.iconName] || Globe;
             const isExpanded = expandedServiceId === service.id;
             const isCurrentActiveContext = activeContextId === service.id;
@@ -298,16 +311,29 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
                   <meta itemProp="serviceType" content={service.name} />
                 )}
 
-                {/* Top service badge if present */}
-                {service.badge && (
-                  <div className="absolute top-4 right-4 text-[10px] font-bold uppercase tracking-wider bg-emerald-950 text-emerald-300 border border-emerald-800/60 px-2.5 py-0.5 rounded-full">
-                    {service.badge}
-                  </div>
-                )}
-
                 <div>
+                  {/* Service Cover Image Banner */}
+                  {service.imageUrl && (
+                    <div className="relative h-36 -mx-5 -mt-5 sm:-mx-6 sm:-mt-6 mb-4 overflow-hidden border-b border-slate-800/80 bg-slate-900">
+                      <img
+                        src={service.imageUrl}
+                        alt={service.name}
+                        itemProp="image"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent" />
+                      
+                      {/* Top service badge if present */}
+                      {service.badge && (
+                        <div className="absolute top-3 right-3 text-[10px] font-bold uppercase tracking-wider bg-emerald-950/90 text-emerald-300 border border-emerald-800/80 px-2.5 py-0.5 rounded-full backdrop-blur-sm">
+                          {service.badge}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   {/* Service Icon */}
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/15 to-blue-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 group-hover:scale-105 group-hover:text-cyan-300 transition-all mb-4">
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/15 to-blue-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 group-hover:scale-105 group-hover:text-cyan-300 transition-all mb-4 ${service.imageUrl ? '-mt-10 relative z-10 bg-slate-950/90 shadow-md' : ''}`}>
                     <IconComponent className="w-6 h-6" />
                   </div>
 
