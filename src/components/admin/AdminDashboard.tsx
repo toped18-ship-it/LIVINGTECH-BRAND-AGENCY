@@ -142,6 +142,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite, on
   // Service Edit Modal & Image Upload State
   const [isServiceModalOpen, setIsServiceModalOpen] = useState(false);
   const [editingServiceId, setEditingServiceId] = useState<string | null>(null);
+  const [serviceSavedNotice, setServiceSavedNotice] = useState(false);
   const [serviceForm, setServiceForm] = useState({
     id: '',
     name: '',
@@ -153,6 +154,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite, on
     imageUrl: '',
     benefits: '',
     features: '',
+    isPublished: true,
   });
 
   // Training Settings form
@@ -545,6 +547,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite, on
       imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
       benefits: 'Custom tailored strategy, Fast turnaround, Dedicated support',
       features: 'Initial consultation, Implementation & deployment, Continuous updates',
+      isPublished: true,
     });
     setIsServiceModalOpen(true);
   };
@@ -562,6 +565,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite, on
       imageUrl: svc.imageUrl || '',
       benefits: svc.benefits ? svc.benefits.join(', ') : '',
       features: svc.features ? svc.features.join(', ') : '',
+      isPublished: svc.isPublished !== false,
     });
     setIsServiceModalOpen(true);
   };
@@ -617,6 +621,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite, on
       imageUrl: serviceForm.imageUrl.trim() || undefined,
       benefits: benefitsArr.length ? benefitsArr : ['Custom digital solutions', 'Fast delivery'],
       features: featuresArr.length ? featuresArr : ['Dedicated support'],
+      isPublished: serviceForm.isPublished,
     };
 
     if (editingServiceId) {
@@ -627,13 +632,24 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite, on
       setConfig(updated);
     }
 
+    setServiceSavedNotice(true);
+    setTimeout(() => setServiceSavedNotice(false), 3500);
     setIsServiceModalOpen(false);
+  };
+
+  const handleToggleServicePublish = (id: string) => {
+    const updated = AdminStore.toggleServicePublish(id);
+    setConfig(updated);
+    setServiceSavedNotice(true);
+    setTimeout(() => setServiceSavedNotice(false), 3500);
   };
 
   const handleDeleteService = (id: string) => {
     if (window.confirm('Are you sure you want to delete this service?')) {
       const updated = AdminStore.deleteService(id);
       setConfig(updated);
+      setServiceSavedNotice(true);
+      setTimeout(() => setServiceSavedNotice(false), 3500);
     }
   };
 
@@ -1927,6 +1943,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite, on
               </button>
             </div>
 
+            {/* Saved Notification Banner */}
+            {serviceSavedNotice && (
+              <div className="p-3.5 rounded-2xl bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-xs font-semibold flex items-center gap-2 shadow-lg shadow-emerald-950/30 animate-fade-in">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>Service changes saved successfully! Updated and published live on website.</span>
+              </div>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {config.services.map((svc) => (
                 <div key={svc.id} className="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col justify-between space-y-4">
@@ -1947,11 +1971,22 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite, on
                       <span className="absolute top-2 left-2 text-[10px] font-mono text-cyan-300 bg-slate-950/80 px-2 py-0.5 rounded border border-slate-800 uppercase font-semibold">
                         {svc.id}
                       </span>
-                      {svc.badge && (
-                        <span className="absolute top-2 right-2 text-[10px] font-bold uppercase bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded-full">
-                          {svc.badge}
+                      <div className="absolute top-2 right-2 flex items-center gap-1.5">
+                        <span
+                          className={`text-[10px] font-bold uppercase border px-2 py-0.5 rounded-full ${
+                            svc.isPublished !== false
+                              ? 'bg-emerald-950/90 text-emerald-300 border-emerald-800'
+                              : 'bg-amber-950/90 text-amber-300 border-amber-800'
+                          }`}
+                        >
+                          {svc.isPublished !== false ? 'Published' : 'Draft'}
                         </span>
-                      )}
+                        {svc.badge && (
+                          <span className="text-[10px] font-bold uppercase bg-slate-950/90 text-cyan-300 border border-cyan-800 px-2 py-0.5 rounded-full">
+                            {svc.badge}
+                          </span>
+                        )}
+                      </div>
                     </div>
 
                     <h4 className="text-base font-bold text-white mb-1">{svc.name}</h4>
@@ -1969,9 +2004,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite, on
                   </div>
 
                   <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                    <span className="text-[11px] text-slate-400 font-mono truncate max-w-[150px]">
-                      CTA: {svc.ctaText}
-                    </span>
+                    <button
+                      type="button"
+                      onClick={() => handleToggleServicePublish(svc.id)}
+                      className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition-all cursor-pointer ${
+                        svc.isPublished !== false
+                          ? 'bg-slate-950 text-emerald-400 border-emerald-800/60 hover:bg-emerald-950/40'
+                          : 'bg-amber-950/40 text-amber-300 border-amber-800/80 hover:bg-amber-900/60'
+                      }`}
+                      title={svc.isPublished !== false ? 'Click to unpublish service' : 'Click to publish service live'}
+                    >
+                      {svc.isPublished !== false ? 'Unpublish' : 'Publish Live'}
+                    </button>
+
                     <div className="flex items-center gap-2">
                       <button
                         type="button"
@@ -2932,6 +2977,28 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToSite, on
                   placeholder="e.g., Business websites, School portals, Church websites"
                   className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white"
                 />
+              </div>
+
+              {/* PUBLISH STATUS TOGGLE */}
+              <div className="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-between">
+                <div>
+                  <label className="font-semibold text-slate-200 block">Publish Service Live on Website</label>
+                  <p className="text-[11px] text-slate-400">
+                    When active, this service package will be immediately visible to public clients on the website homepage.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setServiceForm((prev) => ({ ...prev, isPublished: !prev.isPublished }))}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-colors cursor-pointer ${
+                    serviceForm.isPublished
+                      ? 'bg-emerald-950 text-emerald-300 border-emerald-800'
+                      : 'bg-amber-950 text-amber-300 border-amber-800'
+                  }`}
+                >
+                  {serviceForm.isPublished ? 'Status: Published' : 'Status: Draft'}
+                </button>
               </div>
 
               <div className="pt-3 border-t border-slate-800 flex items-center justify-end gap-2">

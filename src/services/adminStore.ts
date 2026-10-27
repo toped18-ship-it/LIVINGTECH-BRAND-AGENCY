@@ -295,6 +295,19 @@ export class AdminStore {
     return updated;
   }
 
+  static toggleServicePublish(id: string): BusinessConfig {
+    const current = this.getConfig();
+    const updatedServices = current.services.map((s) =>
+      s.id === id ? { ...s, isPublished: s.isPublished === false ? true : false } : s
+    );
+    const updated: BusinessConfig = {
+      ...current,
+      services: updatedServices,
+    };
+    this.saveConfig(updated);
+    return updated;
+  }
+
   static updatePortfolioItem(item: PortfolioItem): BusinessConfig {
     const current = this.getConfig();
     const updatedPortfolio = current.portfolio.map((p) => (p.id === item.id ? item : p));

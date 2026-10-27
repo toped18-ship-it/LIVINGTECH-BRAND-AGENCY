@@ -16,6 +16,7 @@ export interface ServiceItem {
   features: string[];
   badge?: string;
   imageUrl?: string;
+  isPublished?: boolean;
 }
 
 export interface PortfolioItem {

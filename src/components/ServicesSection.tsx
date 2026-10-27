@@ -282,7 +282,9 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
 
         {/* Services Grid with Microdata and Cover Images */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {servicesList.map((service: ServiceItem) => {
+          {servicesList
+            .filter((service) => service.isPublished !== false)
+            .map((service: ServiceItem) => {
             const IconComponent = ICON_MAP[service.iconName] || Globe;
             const isExpanded = expandedServiceId === service.id;
             const isCurrentActiveContext = activeContextId === service.id;

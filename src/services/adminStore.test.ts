@@ -187,6 +187,7 @@ test('AdminStore creates new custom service with images and deletes it', () => {
     imageUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
     benefits: ['Expert guidance', 'Workflow automation'],
     features: ['Process auditing', 'Tech stack selection'],
+    isPublished: true,
   };
 
   AdminStore.addService(customService);
@@ -194,7 +195,14 @@ test('AdminStore creates new custom service with images and deletes it', () => {
   const addedService = configAfterAdd.services.find((s) => s.id === 'service-custom-digital-consulting');
   assert.ok(addedService);
   assert.equal(addedService?.name, 'Custom Digital Transformation Consulting');
+  assert.equal(addedService?.isPublished, true);
   assert.ok(addedService?.imageUrl?.startsWith('data:image/png;base64,'));
+
+  // Test toggle publish
+  AdminStore.toggleServicePublish('service-custom-digital-consulting');
+  const configAfterToggle = AdminStore.getConfig();
+  const toggledService = configAfterToggle.services.find((s) => s.id === 'service-custom-digital-consulting');
+  assert.equal(toggledService?.isPublished, false);
 
   // Clean up
   AdminStore.deleteService('service-custom-digital-consulting');
