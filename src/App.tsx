@@ -7,7 +7,7 @@ import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { AdminLoginModal } from './components/admin/AdminLoginModal';
 import { AdminDashboard } from './components/admin/AdminDashboard';
 import { AdminStore } from './services/adminStore';
-import { resolveRoute, AppRoute } from './utils/navigation';
+import { resolveRoute, AppRoute, navigateTo } from './utils/navigation';
 
 // Dedicated Page Components
 import { HomePage } from './pages/HomePage';
@@ -66,7 +66,7 @@ export default function App() {
     window.addEventListener('popstate', handleRouteChange);
     window.addEventListener('hashchange', handleRouteChange);
 
-    // Keyboard shortcut for administrator: press '/' (when not focused in form input) or Ctrl+Shift+A
+    // Secret shortcut for administrator: press '/' (when not focused in form input) or Ctrl+Shift+A
     const handleKeyDown = (e: KeyboardEvent) => {
       const activeEl = document.activeElement;
       const isInputFocused =
@@ -74,12 +74,11 @@ export default function App() {
         ['input', 'textarea', 'select'].includes(activeEl.tagName.toLowerCase());
 
       if (
-        (!isInputFocused && e.key === '/') ||
+        (!isInputFocused && (e.key === '/' || e.code === 'Slash')) ||
         ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'a')
       ) {
         e.preventDefault();
-        window.history.pushState({}, '', '/admin');
-        syncRoute();
+        navigateTo('/admin');
       }
     };
     window.addEventListener('keydown', handleKeyDown);

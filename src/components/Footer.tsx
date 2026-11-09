@@ -6,7 +6,6 @@ import {
   MessageSquare,
   Globe,
   ArrowUp,
-  ShieldCheck,
 } from 'lucide-react';
 import { BUSINESS_CONFIG } from '../config/business';
 import { getWhatsAppServiceUrl } from '../utils/whatsapp';
@@ -144,16 +143,6 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPolicy, onSelectService })
                   Contact & Quotes
                 </button>
               </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={() => navigateTo('/admin')}
-                  className="hover:text-cyan-400 transition-colors cursor-pointer text-left flex items-center gap-1.5 text-cyan-400 font-medium pt-1"
-                >
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>Admin Portal</span>
-                </button>
-              </li>
             </ul>
           </div>
 
@@ -243,14 +232,6 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPolicy, onSelectService })
               className="hover:text-cyan-400 transition-colors"
             >
               Terms & Conditions
-            </button>
-            <button
-              type="button"
-              onClick={() => navigateTo('/admin')}
-              className="hover:text-cyan-400 transition-colors flex items-center gap-1 cursor-pointer text-slate-400 hover:text-white"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Admin Login</span>
             </button>
             <button
               type="button"
