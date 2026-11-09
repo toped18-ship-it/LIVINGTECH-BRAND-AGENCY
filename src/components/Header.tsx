@@ -3,11 +3,14 @@ import { Menu, X, MessageSquare, ArrowRight, ShieldCheck, Phone } from 'lucide-r
 import { BUSINESS_CONFIG } from '../config/business';
 import { getWhatsAppServiceUrl } from '../utils/whatsapp';
 
+import { NAV_ITEMS, navigateTo, AppRoute } from '../utils/navigation';
+
 interface HeaderProps {
   onOpenQuoteModal: (serviceName?: string) => void;
+  currentRoute?: AppRoute;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
+export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal, currentRoute = 'home' }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -19,18 +22,9 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Services', href: '#services' },
-    { name: 'Portfolio', href: '#portfolio' },
-    { name: 'Blog', href: '#blog' },
-    { name: 'Training', href: '#training' },
-    { name: 'Process', href: '#process' },
-    { name: 'Contact', href: '#contact' },
-  ];
-
-  const handleLinkClick = () => {
+  const handleNavClick = (path: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    navigateTo(path);
     setIsMobileMenuOpen(false);
   };
 
@@ -40,16 +34,17 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-slate-950/90 backdrop-blur-md border-b border-slate-800/80 shadow-lg shadow-black/20 py-3'
-          : 'bg-transparent py-4'
+          ? 'bg-slate-950/95 backdrop-blur-md border-b border-slate-800/80 shadow-lg shadow-black/20 py-3'
+          : 'bg-slate-950/80 backdrop-blur-sm border-b border-slate-800/40 py-4'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Brand Logo / Treatment */}
           <a
-            href="#home"
-            className="group flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 rounded-lg p-1"
+            href="/"
+            onClick={(e) => handleNavClick('/', e)}
+            className="group flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 rounded-lg p-1 cursor-pointer"
             aria-label="LivingTech Brand Agency Home"
           >
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-700 flex items-center justify-center text-white font-extrabold text-xl shadow-md shadow-cyan-500/20 group-hover:scale-105 transition-transform">
@@ -66,16 +61,24 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
           </a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-7" aria-label="Main Navigation">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors py-1 focus:outline-none focus:ring-2 focus:ring-cyan-400 rounded"
-              >
-                {link.name}
-              </a>
-            ))}
+          <nav className="hidden lg:flex items-center gap-2" aria-label="Main Navigation">
+            {NAV_ITEMS.map((link) => {
+              const isActive = currentRoute === link.route;
+              return (
+                <a
+                  key={link.name}
+                  href={link.path}
+                  onClick={(e) => handleNavClick(link.path, e)}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-cyan-400 cursor-pointer ${
+                    isActive
+                      ? 'text-cyan-300 bg-cyan-950/80 border border-cyan-700/80 font-bold shadow-sm shadow-cyan-500/10'
+                      : 'text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent'
+                  }`}
+                >
+                  {link.name}
+                </a>
+              );
+            })}
           </nav>
 
           {/* Action CTAs */}
@@ -130,16 +133,24 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
           id="mobile-menu"
         >
           <nav className="flex flex-col space-y-1" aria-label="Mobile Navigation">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={handleLinkClick}
-                className="px-3 py-2.5 rounded-lg text-base font-medium text-slate-200 hover:text-cyan-400 hover:bg-slate-900 transition-colors"
-              >
-                {link.name}
-              </a>
-            ))}
+            {NAV_ITEMS.map((link) => {
+              const isActive = currentRoute === link.route;
+              return (
+                <a
+                  key={link.name}
+                  href={link.path}
+                  onClick={(e) => handleNavClick(link.path, e)}
+                  className={`px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center justify-between cursor-pointer ${
+                    isActive
+                      ? 'text-cyan-300 bg-cyan-950/80 font-bold border border-cyan-800/80'
+                      : 'text-slate-200 hover:text-cyan-400 hover:bg-slate-900'
+                  }`}
+                >
+                  <span>{link.name}</span>
+                  {isActive && <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />}
+                </a>
+              );
+            })}
           </nav>
 
           <div className="mt-4 pt-4 border-t border-slate-800/80 flex flex-col gap-3">
@@ -156,7 +167,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
                 href={whatsappGeneralUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={handleLinkClick}
+                onClick={() => setIsMobileMenuOpen(false)}
                 className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 text-sm font-medium hover:bg-emerald-600/30"
               >
                 <MessageSquare className="w-4 h-4" />
@@ -165,7 +176,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal }) => {
               <button
                 type="button"
                 onClick={() => {
-                  handleLinkClick();
+                  setIsMobileMenuOpen(false);
                   onOpenQuoteModal();
                 }}
                 className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-sm font-semibold"

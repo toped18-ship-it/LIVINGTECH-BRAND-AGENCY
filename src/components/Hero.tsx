@@ -3,6 +3,7 @@ import { ArrowRight, MessageSquare, Sparkles, Code2, Palette, Laptop, CheckCircl
 import { BUSINESS_CONFIG, BusinessConfig } from '../config/business';
 import { AdminStore } from '../services/adminStore';
 import { getWhatsAppServiceUrl } from '../utils/whatsapp';
+import { navigateTo } from '../utils/navigation';
 
 interface HeroProps {
   onOpenQuoteModal: () => void;
@@ -79,12 +80,13 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
                 <ArrowRight className="w-4 h-4" />
               </button>
 
-              <a
-                href="#services"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-slate-200 hover:text-white font-semibold text-sm sm:text-base transition-all"
+              <button
+                type="button"
+                onClick={() => navigateTo('/services')}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-slate-200 hover:text-white font-semibold text-sm sm:text-base transition-all cursor-pointer"
               >
                 <span>Explore Our Services</span>
-              </a>
+              </button>
 
               <a
                 href={whatsappUrl}
@@ -201,16 +203,17 @@ export const Hero: React.FC<HeroProps> = ({ onOpenQuoteModal }) => {
           </div>
         </div>
 
-        {/* Scroll down indicator to tease services without scrolling friction */}
+        {/* Explore services indicator */}
         <div className="mt-10 flex justify-center">
-          <a
-            href="#services"
-            className="flex items-center gap-1 text-xs text-slate-400 hover:text-cyan-400 transition-colors"
-            aria-label="Scroll to services"
+          <button
+            type="button"
+            onClick={() => navigateTo('/services')}
+            className="flex items-center gap-1 text-xs text-slate-400 hover:text-cyan-400 transition-colors cursor-pointer"
+            aria-label="Explore services"
           >
             <span>Explore Services</span>
             <ChevronDown className="w-4 h-4 animate-bounce" />
-          </a>
+          </button>
         </div>
       </div>
     </section>

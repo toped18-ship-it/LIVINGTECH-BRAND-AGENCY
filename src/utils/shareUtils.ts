@@ -16,84 +16,84 @@ export const SECTION_SHARE_DIRECTORY: SectionShareItem[] = [
   {
     id: 'home',
     name: 'Homepage / LivingTech Overview',
-    hash: '#home',
+    hash: '/',
     description: 'Main landing page featuring agency mission, founder profile, and solutions.',
     category: 'Core Pages',
   },
   {
     id: 'services',
     name: 'All Digital Services Catalog',
-    hash: '#services',
+    hash: '/services',
     description: 'Comprehensive directory of 8 core technical, branding, and digitalization services.',
     category: 'Key Services',
   },
   {
     id: 'graphic-design',
     name: 'Graphic Design & Visual Branding',
-    hash: '#service-graphic-design-branding',
+    hash: '/services#graphic-design-branding',
     description: 'Custom logos, flyers, banners, social media marketing, and brand identity.',
     category: 'Key Services',
   },
   {
     id: 'computer-training',
     name: 'Computer Training & Digital Skills',
-    hash: '#service-computer-training',
+    hash: '/services#computer-training',
     description: 'Practical computer literacy, office tools, design, and web training classes.',
     category: 'Key Services',
   },
   {
     id: 'web-dev',
     name: 'Website & Application Development',
-    hash: '#service-website-design',
+    hash: '/services#website-design',
     description: 'Custom responsive web platforms, portals, and software development.',
     category: 'Key Services',
   },
   {
     id: 'training',
     name: 'Youth Skill Acquisition Program (3-Day)',
-    hash: '#training',
+    hash: '/training',
     description: '₦1,500 hands-on cohort program in Abocho, Dekina LGA, Kogi State.',
     category: 'Programs & Media',
   },
   {
     id: 'portfolio',
     name: 'Portfolio, EdTech & Project Showcase',
-    hash: '#portfolio',
+    hash: '/portfolio',
     description: 'Interactive gallery of client projects, LivingstoneEdu, and digital work.',
     category: 'Programs & Media',
   },
   {
     id: 'blog',
     name: 'LivingTech Blog & Tech Insights',
-    hash: '#blog',
+    hash: '/blog',
     description: 'Articles, practical tutorials, and digital growth strategies for Nigeria.',
     category: 'Programs & Media',
   },
   {
     id: 'about',
     name: 'About LivingTech & Leadership',
-    hash: '#about',
+    hash: '/about',
     description: 'Agency story, vision, and profile of founder Temitope Oluwaseun.',
     category: 'Core Pages',
   },
   {
     id: 'process',
     name: 'How We Work (4-Step Process)',
-    hash: '#process',
+    hash: '/process',
     description: 'Consultation, planning, precision creation, and ongoing support.',
     category: 'Core Pages',
   },
   {
     id: 'testimonials',
     name: 'Client Feedback & Partnerships',
-    hash: '#testimonials',
+    hash: '/about#testimonials',
     description: 'Genuine testimonials from business owners, schools, and past students.',
     category: 'Core Pages',
   },
   {
     id: 'contact',
     name: 'Contact & Quotation Request',
-    hash: '#contact',
+    hash: '/contact',
     description: 'Direct contact info, WhatsApp links, and instant project quote forms.',
     category: 'Core Pages',
   },
@@ -113,27 +113,25 @@ export function generateSlug(title: string): string {
 }
 
 /**
- * Returns the absolute canonical share URL for any section.
+ * Returns the absolute canonical share URL for any section or page.
  */
-export function getSectionShareUrl(sectionIdOrHash: string): string {
-  const clean = sectionIdOrHash.startsWith('#')
-    ? sectionIdOrHash
-    : `#${sectionIdOrHash.replace(/^#/, '')}`;
-  return `${BASE_URL}/${clean}`;
+export function getSectionShareUrl(sectionIdOrPath: string): string {
+  const clean = sectionIdOrPath.replace(/^#\/?/, '').replace(/^\//, '');
+  return clean ? `${BASE_URL}/${clean}` : BASE_URL;
 }
 
 /**
  * Returns the absolute canonical share URL for a specific blog post.
  */
 export function getBlogShareUrl(slugOrId: string): string {
-  return `${BASE_URL}/#blog/${slugOrId}`;
+  return `${BASE_URL}/blog/${slugOrId}`;
 }
 
 /**
  * Returns the absolute canonical share URL for a specific portfolio project.
  */
 export function getPortfolioShareUrl(id: string): string {
-  return `${BASE_URL}/#portfolio/${id}`;
+  return `${BASE_URL}/portfolio/${id}`;
 }
 
 /**

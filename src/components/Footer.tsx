@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { BUSINESS_CONFIG } from '../config/business';
 import { getWhatsAppServiceUrl } from '../utils/whatsapp';
+import { navigateTo } from '../utils/navigation';
 
 interface FooterProps {
   onOpenPolicy: (type: 'privacy' | 'terms') => void;
@@ -30,12 +31,16 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPolicy, onSelectService })
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-slate-800/80">
           {/* Brand & Mission (Col 1-4) */}
           <div className="lg:col-span-4 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-700 flex items-center justify-center text-white font-extrabold text-lg shadow-md shadow-cyan-500/20">
+            <div
+              onClick={() => navigateTo('/')}
+              className="flex items-center gap-3 cursor-pointer group"
+              title="Return to Homepage"
+            >
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-700 flex items-center justify-center text-white font-extrabold text-lg shadow-md shadow-cyan-500/20 group-hover:scale-105 transition-transform">
                 LT
               </div>
               <div>
-                <span className="font-extrabold text-base tracking-wider text-white block uppercase font-mono">
+                <span className="font-extrabold text-base tracking-wider text-white block uppercase font-mono group-hover:text-cyan-400 transition-colors">
                   {BUSINESS_CONFIG.businessName}
                 </span>
                 <span className="text-[10px] text-cyan-400 font-medium tracking-widest uppercase">
@@ -68,44 +73,76 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPolicy, onSelectService })
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <a href="#home" className="hover:text-cyan-400 transition-colors">
+                <button
+                  type="button"
+                  onClick={() => navigateTo('/')}
+                  className="hover:text-cyan-400 transition-colors cursor-pointer text-left"
+                >
                   Home
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#about" className="hover:text-cyan-400 transition-colors">
+                <button
+                  type="button"
+                  onClick={() => navigateTo('/about')}
+                  className="hover:text-cyan-400 transition-colors cursor-pointer text-left"
+                >
                   About LivingTech
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#services" className="hover:text-cyan-400 transition-colors">
+                <button
+                  type="button"
+                  onClick={() => navigateTo('/services')}
+                  className="hover:text-cyan-400 transition-colors cursor-pointer text-left"
+                >
                   Our Services
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#portfolio" className="hover:text-cyan-400 transition-colors">
+                <button
+                  type="button"
+                  onClick={() => navigateTo('/portfolio')}
+                  className="hover:text-cyan-400 transition-colors cursor-pointer text-left"
+                >
                   Portfolio & Initiatives
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#blog" className="hover:text-cyan-400 transition-colors">
+                <button
+                  type="button"
+                  onClick={() => navigateTo('/blog')}
+                  className="hover:text-cyan-400 transition-colors cursor-pointer text-left"
+                >
                   Blog & Tech Insights
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#training" className="hover:text-cyan-400 transition-colors">
+                <button
+                  type="button"
+                  onClick={() => navigateTo('/training')}
+                  className="hover:text-cyan-400 transition-colors cursor-pointer text-left"
+                >
                   Youth Computer Training
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#process" className="hover:text-cyan-400 transition-colors">
+                <button
+                  type="button"
+                  onClick={() => navigateTo('/process')}
+                  className="hover:text-cyan-400 transition-colors cursor-pointer text-left"
+                >
                   Our Process
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#contact" className="hover:text-cyan-400 transition-colors">
+                <button
+                  type="button"
+                  onClick={() => navigateTo('/contact')}
+                  className="hover:text-cyan-400 transition-colors cursor-pointer text-left"
+                >
                   Contact & Quotes
-                </a>
+                </button>
               </li>
             </ul>
           </div>

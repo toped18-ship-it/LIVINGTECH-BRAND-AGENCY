@@ -23,21 +23,21 @@ describe('shareUtils - Decoupled pure logic tests', () => {
     assert.strictEqual(generateSlug('   Multiple   Spaces   '), 'multiple-spaces');
   });
 
-  it('getSectionShareUrl generates valid hash-based share links for all sections', () => {
-    assert.strictEqual(getSectionShareUrl('services'), 'https://www.livingtech.name.ng/#services');
-    assert.strictEqual(getSectionShareUrl('training'), 'https://www.livingtech.name.ng/#training');
-    assert.strictEqual(getSectionShareUrl('blog'), 'https://www.livingtech.name.ng/#blog');
-    assert.strictEqual(getSectionShareUrl('portfolio'), 'https://www.livingtech.name.ng/#portfolio');
+  it('getSectionShareUrl generates valid clean share links for all pages/sections', () => {
+    assert.strictEqual(getSectionShareUrl('services'), 'https://www.livingtech.name.ng/services');
+    assert.strictEqual(getSectionShareUrl('training'), 'https://www.livingtech.name.ng/training');
+    assert.strictEqual(getSectionShareUrl('blog'), 'https://www.livingtech.name.ng/blog');
+    assert.strictEqual(getSectionShareUrl('portfolio'), 'https://www.livingtech.name.ng/portfolio');
   });
 
   it('getBlogShareUrl creates dedicated post links', () => {
     const url = getBlogShareUrl('empowering-youth-computer-training');
-    assert.strictEqual(url, 'https://www.livingtech.name.ng/#blog/empowering-youth-computer-training');
+    assert.strictEqual(url, 'https://www.livingtech.name.ng/blog/empowering-youth-computer-training');
   });
 
   it('getPortfolioShareUrl creates dedicated project links', () => {
     const url = getPortfolioShareUrl('livingstone-edu');
-    assert.strictEqual(url, 'https://www.livingtech.name.ng/#portfolio/livingstone-edu');
+    assert.strictEqual(url, 'https://www.livingtech.name.ng/portfolio/livingstone-edu');
   });
 
   it('generateWhatsAppShareUrl correctly encodes text and target url', () => {

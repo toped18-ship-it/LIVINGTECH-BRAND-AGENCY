@@ -1,16 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Header } from './components/Header';
-import { Hero } from './components/Hero';
-import { ServicesSection } from './components/ServicesSection';
-import { YouthTrainingSection } from './components/YouthTrainingSection';
-import { AboutSection } from './components/AboutSection';
-import { PortfolioSection } from './components/PortfolioSection';
-import { BlogSection } from './components/BlogSection';
-import { WhyChooseUs } from './components/WhyChooseUs';
-import { ProcessSection } from './components/ProcessSection';
-import { TestimonialsSection } from './components/TestimonialsSection';
-import { FAQSection } from './components/FAQSection';
-import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { QuoteModal } from './components/QuoteModal';
 import { PolicyModal } from './components/PolicyModal';
@@ -18,36 +7,43 @@ import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { AdminLoginModal } from './components/admin/AdminLoginModal';
 import { AdminDashboard } from './components/admin/AdminDashboard';
 import { AdminStore } from './services/adminStore';
+import { resolveRoute, AppRoute } from './utils/navigation';
+
+// Dedicated Page Components
+import { HomePage } from './pages/HomePage';
+import { AboutPage } from './pages/AboutPage';
+import { ServicesPage } from './pages/ServicesPage';
+import { PortfolioPage } from './pages/PortfolioPage';
+import { BlogPage } from './pages/BlogPage';
+import { TrainingPage } from './pages/TrainingPage';
+import { ProcessPage } from './pages/ProcessPage';
+import { ContactPage } from './pages/ContactPage';
 
 export default function App() {
+  const [currentRoute, setCurrentRoute] = useState<AppRoute>('home');
   const [isAdminView, setIsAdminView] = useState(false);
   const [isAdminLoginOpen, setIsAdminLoginOpen] = useState(false);
 
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
-  const [selectedServiceForQuote, setSelectedServiceForQuote] = useState<string | undefined>(
-    undefined
-  );
+  const [selectedServiceForQuote, setSelectedServiceForQuote] = useState<string | undefined>(undefined);
   const [activePolicy, setActivePolicy] = useState<'privacy' | 'terms' | null>(null);
 
-  // Check URL pathname or hash for /admin route
-  const checkAdminRoute = useCallback(() => {
+  // Sync route based on browser pathname, hash, or query
+  const syncRoute = useCallback(() => {
     if (typeof window === 'undefined') return;
-    const path = window.location.pathname.toLowerCase();
-    const hash = window.location.hash.toLowerCase();
-    const query = window.location.search.toLowerCase();
 
-    const isAdminPath =
-      path === '/admin' ||
-      path === '/admin/' ||
-      path.startsWith('/admin') ||
-      path === '/portal' ||
-      path === '/login' ||
-      hash === '#admin' ||
-      hash === '#/admin' ||
-      query.includes('admin=1') ||
-      query.includes('admin=true');
+    const resolved = resolveRoute(
+      window.location.pathname,
+      window.location.hash,
+      window.location.search
+    );
 
-    if (isAdminPath) {
+    // Update browser tab document title
+    if (resolved.title) {
+      document.title = resolved.title;
+    }
+
+    if (resolved.route === 'admin') {
       if (AdminStore.isAuthenticated()) {
         setIsAdminView(true);
         setIsAdminLoginOpen(false);
@@ -55,21 +51,23 @@ export default function App() {
         setIsAdminView(false);
         setIsAdminLoginOpen(true);
       }
+      setCurrentRoute('admin');
     } else {
       setIsAdminView(false);
       setIsAdminLoginOpen(false);
+      setCurrentRoute(resolved.route);
     }
   }, []);
 
   useEffect(() => {
-    checkAdminRoute();
+    syncRoute();
 
-    const handlePopState = () => {
-      checkAdminRoute();
+    const handleRouteChange = () => {
+      syncRoute();
     };
 
-    window.addEventListener('popstate', handlePopState);
-    window.addEventListener('hashchange', handlePopState);
+    window.addEventListener('popstate', handleRouteChange);
+    window.addEventListener('hashchange', handleRouteChange);
 
     // Keyboard shortcut for administrator: press '/' (when not focused in form input) or Ctrl+Shift+A
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -84,17 +82,17 @@ export default function App() {
       ) {
         e.preventDefault();
         window.history.pushState({}, '', '/admin');
-        checkAdminRoute();
+        syncRoute();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      window.removeEventListener('popstate', handlePopState);
-      window.removeEventListener('hashchange', handlePopState);
+      window.removeEventListener('popstate', handleRouteChange);
+      window.removeEventListener('hashchange', handleRouteChange);
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [checkAdminRoute]);
+  }, [syncRoute]);
 
   const handleOpenQuoteModal = (serviceName?: string) => {
     setSelectedServiceForQuote(serviceName);
@@ -109,6 +107,7 @@ export default function App() {
   const handleLoginSuccess = () => {
     setIsAdminLoginOpen(false);
     setIsAdminView(true);
+    setCurrentRoute('admin');
     if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/admin')) {
       window.history.pushState({}, '', '/admin');
     }
@@ -117,8 +116,10 @@ export default function App() {
   const handleBackToSite = () => {
     setIsAdminView(false);
     setIsAdminLoginOpen(false);
+    setCurrentRoute('home');
     if (typeof window !== 'undefined') {
       window.history.pushState({}, '', '/');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -126,8 +127,10 @@ export default function App() {
     AdminStore.logout();
     setIsAdminView(false);
     setIsAdminLoginOpen(false);
+    setCurrentRoute('home');
     if (typeof window !== 'undefined') {
       window.history.pushState({}, '', '/');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -141,48 +144,43 @@ export default function App() {
     );
   }
 
+  // Render the dedicated page matching the URL route
+  const renderCurrentPage = () => {
+    switch (currentRoute) {
+      case 'about':
+        return <AboutPage onOpenQuoteModal={handleOpenQuoteModal} />;
+      case 'services':
+        return <ServicesPage onOpenQuoteModal={handleOpenQuoteModal} />;
+      case 'portfolio':
+        return <PortfolioPage onOpenQuoteModal={handleOpenQuoteModal} />;
+      case 'blog':
+        return <BlogPage onOpenQuoteModal={handleOpenQuoteModal} />;
+      case 'training':
+        return <TrainingPage />;
+      case 'process':
+        return <ProcessPage onOpenQuoteModal={handleOpenQuoteModal} />;
+      case 'contact':
+        return <ContactPage preselectedService={selectedServiceForQuote} />;
+      case 'home':
+      default:
+        return <HomePage onOpenQuoteModal={handleOpenQuoteModal} />;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-slate-950">
-      {/* Navigation Header without any visible Admin button */}
-      <Header onOpenQuoteModal={handleOpenQuoteModal} />
+      {/* Navigation Header with active menu tracking */}
+      <Header
+        onOpenQuoteModal={handleOpenQuoteModal}
+        currentRoute={currentRoute}
+      />
 
-      {/* Main Content Area */}
+      {/* Main Multi-Page Content Area */}
       <main className="flex-1">
-        {/* Hero Section */}
-        <Hero onOpenQuoteModal={() => handleOpenQuoteModal()} />
-
-        {/* Services Section */}
-        <ServicesSection onSelectServiceForQuote={handleOpenQuoteModal} />
-
-        {/* Youth Computer Training & Skill Acquisition */}
-        <YouthTrainingSection />
-
-        {/* About LivingTech & Founder Profile */}
-        <AboutSection onOpenQuoteModal={() => handleOpenQuoteModal()} />
-
-        {/* Portfolio & Project Showcase */}
-        <PortfolioSection />
-
-        {/* Blog & Educational Articles */}
-        <BlogSection onOpenQuoteModal={handleOpenQuoteModal} />
-
-        {/* Why Choose LivingTech */}
-        <WhyChooseUs />
-
-        {/* How the Process Works */}
-        <ProcessSection />
-
-        {/* Genuine Client Feedback & Partnership Invitation */}
-        <TestimonialsSection />
-
-        {/* Frequently Asked Questions */}
-        <FAQSection />
-
-        {/* Contact & Request a Quotation */}
-        <ContactSection preselectedService={selectedServiceForQuote} />
+        {renderCurrentPage()}
       </main>
 
-      {/* Website Footer without any visible Admin link */}
+      {/* Website Footer with Multi-Page Navigation */}
       <Footer
         onOpenPolicy={(type) => setActivePolicy(type)}
         onSelectService={(serviceName) => handleOpenQuoteModal(serviceName)}
