@@ -18,6 +18,7 @@ import { BlogPage } from './pages/BlogPage';
 import { TrainingPage } from './pages/TrainingPage';
 import { ProcessPage } from './pages/ProcessPage';
 import { ContactPage } from './pages/ContactPage';
+import { AdminPage } from './pages/AdminPage';
 
 export default function App() {
   const [currentRoute, setCurrentRoute] = useState<AppRoute>('home');
@@ -44,13 +45,9 @@ export default function App() {
     }
 
     if (resolved.route === 'admin') {
-      if (AdminStore.isAuthenticated()) {
-        setIsAdminView(true);
-        setIsAdminLoginOpen(false);
-      } else {
-        setIsAdminView(false);
-        setIsAdminLoginOpen(true);
-      }
+      const isAuth = AdminStore.isAuthenticated();
+      setIsAdminView(isAuth);
+      setIsAdminLoginOpen(false);
       setCurrentRoute('admin');
     } else {
       setIsAdminView(false);
@@ -134,12 +131,20 @@ export default function App() {
     }
   };
 
-  // If in Admin Portal Mode, render full-featured Management Dashboard
-  if (isAdminView) {
+  // Dedicated Admin Route: Render Dashboard if authenticated, else dedicated full AdminPage
+  if (currentRoute === 'admin') {
+    if (isAdminView || AdminStore.isAuthenticated()) {
+      return (
+        <AdminDashboard
+          onBackToSite={handleBackToSite}
+          onLogout={handleAdminLogout}
+        />
+      );
+    }
     return (
-      <AdminDashboard
+      <AdminPage
+        onLoginSuccess={handleLoginSuccess}
         onBackToSite={handleBackToSite}
-        onLogout={handleAdminLogout}
       />
     );
   }

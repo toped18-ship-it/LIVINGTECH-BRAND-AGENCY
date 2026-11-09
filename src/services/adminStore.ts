@@ -432,8 +432,17 @@ export class AdminStore {
   }
 
   static isAuthenticated(): boolean {
-    if (typeof sessionStorage !== 'undefined') {
-      return sessionStorage.getItem(STORAGE_KEYS.AUTH) === 'true';
+    try {
+      if (typeof localStorage !== 'undefined') {
+        const localAuth = localStorage.getItem(STORAGE_KEYS.AUTH);
+        if (localAuth === 'true') return true;
+      }
+      if (typeof sessionStorage !== 'undefined') {
+        const sessionAuth = sessionStorage.getItem(STORAGE_KEYS.AUTH);
+        if (sessionAuth === 'true') return true;
+      }
+    } catch {
+      // Storage access blocked or restricted in iframe/private mode
     }
     return memorySessionAuth;
   }
@@ -441,8 +450,15 @@ export class AdminStore {
   static login(password: string): boolean {
     const validPasswords = ['livingtech2026', 'admin123', 'abocho2026'];
     if (validPasswords.includes(password.trim())) {
-      if (typeof sessionStorage !== 'undefined') {
-        sessionStorage.setItem(STORAGE_KEYS.AUTH, 'true');
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem(STORAGE_KEYS.AUTH, 'true');
+        }
+        if (typeof sessionStorage !== 'undefined') {
+          sessionStorage.setItem(STORAGE_KEYS.AUTH, 'true');
+        }
+      } catch {
+        // Storage access blocked or restricted
       }
       memorySessionAuth = true;
       return true;
@@ -451,8 +467,15 @@ export class AdminStore {
   }
 
   static logout(): void {
-    if (typeof sessionStorage !== 'undefined') {
-      sessionStorage.removeItem(STORAGE_KEYS.AUTH);
+    try {
+      if (typeof localStorage !== 'undefined') {
+        localStorage.removeItem(STORAGE_KEYS.AUTH);
+      }
+      if (typeof sessionStorage !== 'undefined') {
+        sessionStorage.removeItem(STORAGE_KEYS.AUTH);
+      }
+    } catch {
+      // Ignore storage errors on logout
     }
     memorySessionAuth = false;
   }

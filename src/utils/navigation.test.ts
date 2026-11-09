@@ -30,12 +30,19 @@ test('resolveRoute handles sub-paths like /blog/my-slug and /services/web-design
   assert.equal(svcRes.param, 'graphic-design-branding');
 });
 
-test('resolveRoute resolves admin routes securely', () => {
+test('resolveRoute resolves admin routes securely across paths, query params, and redirects', () => {
   assert.equal(resolveRoute('/admin').route, 'admin');
   assert.equal(resolveRoute('/admin/dashboard').route, 'admin');
+  assert.equal(resolveRoute('/admin.html').route, 'admin');
   assert.equal(resolveRoute('/login').route, 'admin');
   assert.equal(resolveRoute('/portal').route, 'admin');
+  assert.equal(resolveRoute('/staff').route, 'admin');
+  assert.equal(resolveRoute('/dashboard').route, 'admin');
   assert.equal(resolveRoute('/', '#admin').route, 'admin');
+  assert.equal(resolveRoute('/', '#/admin').route, 'admin');
+  assert.equal(resolveRoute('/', '', '?admin=1').route, 'admin');
+  assert.equal(resolveRoute('/', '', '?admin=true').route, 'admin');
+  assert.equal(resolveRoute('/', '', '?path=%2Fadmin').route, 'admin');
 });
 
 test('resolveRoute handles legacy hash navigation fallback', () => {

@@ -36,19 +36,45 @@ export const NAV_ITEMS: { name: string; path: string; route: AppRoute }[] = [
  * Normalizes any pathname or hash into a recognized AppRoute
  */
 export function resolveRoute(pathname: string = '/', hash: string = '', search: string = ''): RouteInfo {
-  const cleanPath = pathname.toLowerCase().trim().replace(/\/+$/, '') || '/';
+  let cleanPath = pathname.toLowerCase().trim().replace(/\/+$/, '') || '/';
   const cleanHash = hash.toLowerCase().trim().replace(/^#\/?/, '');
   const cleanSearch = search.toLowerCase().trim();
 
-  // 1. Check for Admin paths
+  // Handle SPA 404 proxy redirects (e.g., /?path=/admin)
+  if (cleanSearch.includes('path=')) {
+    try {
+      const match = search.match(/[?&]path=([^&]+)/i);
+      if (match && match[1]) {
+        const decoded = decodeURIComponent(match[1]);
+        const urlObj = new URL(decoded, 'https://livingtech.local');
+        return resolveRoute(urlObj.pathname, urlObj.hash, urlObj.search);
+      }
+    } catch {
+      // Fallback to normal parsing if decoding fails
+    }
+  }
+
+  // 1. Check for Admin paths across path, hash, or query parameter
   if (
     cleanPath === '/admin' ||
     cleanPath.startsWith('/admin/') ||
+    cleanPath === '/admin.html' ||
     cleanPath === '/portal' ||
+    cleanPath.startsWith('/portal/') ||
     cleanPath === '/login' ||
+    cleanPath === '/staff' ||
+    cleanPath === '/dashboard' ||
     cleanHash === 'admin' ||
+    cleanHash === '/admin' ||
+    cleanHash.startsWith('admin') ||
+    cleanHash === 'portal' ||
+    cleanSearch === '?admin' ||
+    cleanSearch.includes('admin=') ||
     cleanSearch.includes('admin=1') ||
-    cleanSearch.includes('admin=true')
+    cleanSearch.includes('admin=true') ||
+    cleanSearch.includes('page=admin') ||
+    cleanSearch.includes('portal=1') ||
+    cleanSearch.includes('portal=true')
   ) {
     return {
       route: 'admin',

@@ -102,6 +102,21 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal, currentRoute =
               <span>Get a Quote</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
+
+            {/* Direct Admin Access */}
+            <a
+              href="/admin"
+              onClick={(e) => handleNavClick('/admin', e)}
+              className={`p-2 rounded-lg transition-colors border cursor-pointer ${
+                currentRoute === 'admin'
+                  ? 'bg-cyan-950/80 text-cyan-300 border-cyan-700/80'
+                  : 'text-slate-400 hover:text-cyan-400 hover:bg-slate-900 border-slate-800'
+              }`}
+              title="LivingTech Admin Portal"
+              aria-label="Admin Portal"
+            >
+              <ShieldCheck className="w-4 h-4" />
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -151,6 +166,25 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal, currentRoute =
                 </a>
               );
             })}
+
+            {/* Admin Portal Mobile Menu Link */}
+            <a
+              href="/admin"
+              onClick={(e) => handleNavClick('/admin', e)}
+              className={`px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center justify-between cursor-pointer ${
+                currentRoute === 'admin'
+                  ? 'text-cyan-300 bg-cyan-950/80 font-bold border border-cyan-800/80'
+                  : 'text-slate-300 hover:text-cyan-400 hover:bg-slate-900'
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-cyan-400" />
+                <span>Admin Portal</span>
+              </span>
+              {currentRoute === 'admin' && (
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+              )}
+            </a>
           </nav>
 
           <div className="mt-4 pt-4 border-t border-slate-800/80 flex flex-col gap-3">

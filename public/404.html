@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Redirecting...</title>
+  <script>
+    // GitHub Pages / Static Hosting SPA fallback redirector
+    var path = window.location.pathname;
+    var search = window.location.search;
+    var hash = window.location.hash;
+    window.location.replace('/' + (path && path !== '/' ? '?path=' + encodeURIComponent(path + search + hash) : ''));
+  </script>
+</head>
+<body>
+  <p>Redirecting to LivingTech Brand Agency...</p>
+</body>
+</html>
