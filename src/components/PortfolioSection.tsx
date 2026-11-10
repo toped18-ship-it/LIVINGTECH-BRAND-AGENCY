@@ -74,16 +74,16 @@ export const PortfolioSection: React.FC = () => {
     switch (status) {
       case 'Active Project':
       case 'Completed':
-        return 'bg-emerald-950 text-emerald-300 border-emerald-800';
+        return 'bg-emerald-50 text-emerald-800 border-emerald-300';
       case 'Educational Initiative':
-        return 'bg-cyan-950 text-cyan-300 border-cyan-800';
+        return 'bg-cyan-50 text-cyan-800 border-cyan-300';
       case 'In Development':
-        return 'bg-amber-950 text-amber-300 border-amber-800';
+        return 'bg-amber-50 text-amber-800 border-amber-300';
       case 'Proposed Concept':
-        return 'bg-purple-950 text-purple-300 border-purple-800';
+        return 'bg-purple-50 text-purple-800 border-purple-300';
       case 'Preview Coming Soon':
       default:
-        return 'bg-slate-900 text-slate-400 border-slate-700';
+        return 'bg-slate-100 text-slate-600 border-slate-300';
     }
   };
 
@@ -121,33 +121,33 @@ export const PortfolioSection: React.FC = () => {
   };
 
   return (
-    <section id="portfolio" className="py-20 bg-slate-950 relative border-t border-slate-800/80">
+    <section id="portfolio" className="py-20 bg-white relative border-t border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-10">
           <div className="flex items-center justify-center gap-2 mb-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950 border border-cyan-800 text-cyan-300 text-xs font-semibold uppercase tracking-wider">
-              <FolderGit2 className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-400 text-cyan-800 text-xs font-semibold uppercase tracking-wider shadow-[0_0_10px_rgba(6,182,212,0.2)]">
+              <FolderGit2 className="w-3.5 h-3.5 text-cyan-600" />
               <span>Showcase & Work Portfolio</span>
             </div>
             <button
               type="button"
               onClick={handleCopySectionLink}
-              className={`p-1 px-2.5 rounded-full text-[11px] font-semibold border flex items-center gap-1 transition-colors ${
+              className={`p-1 px-2.5 rounded-full text-[11px] font-semibold border flex items-center gap-1 transition-colors cursor-pointer ${
                 copiedSection
-                  ? 'bg-emerald-950 text-emerald-300 border-emerald-800'
-                  : 'bg-slate-900 text-slate-400 hover:text-white border-slate-800'
+                  ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                  : 'bg-white text-slate-700 hover:text-slate-900 border-slate-300 shadow-xs'
               }`}
               title="Copy link to this section"
             >
-              {copiedSection ? <Check className="w-3 h-3 text-emerald-400" /> : <Share2 className="w-3 h-3 text-cyan-400" />}
+              {copiedSection ? <Check className="w-3 h-3 text-emerald-600" /> : <Share2 className="w-3 h-3 text-cyan-600" />}
               <span>{copiedSection ? 'Copied' : 'Share Section'}</span>
             </button>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
             Featured Projects & Digital Work
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-slate-300 leading-relaxed">
+          <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
             Real portfolio designs, educational technology developments, client portals, and brand
             identities created by LivingTech in Abocho, Kogi State.
           </p>
@@ -160,10 +160,10 @@ export const PortfolioSection: React.FC = () => {
               key={cat}
               type="button"
               onClick={() => setActiveCategory(cat)}
-              className={`px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-full transition-all cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs sm:text-sm font-semibold rounded-full transition-all cursor-pointer ${
                 activeCategory === cat
-                  ? 'bg-cyan-500 text-slate-950 font-bold shadow-md shadow-cyan-500/20'
-                  : 'bg-slate-900/90 text-slate-300 hover:text-white hover:bg-slate-800 border border-slate-800'
+                  ? 'bg-cyan-500 text-white font-bold shadow-md shadow-cyan-500/25'
+                  : 'bg-white text-slate-700 hover:text-slate-900 hover:bg-slate-50 border border-slate-300 shadow-xs'
               }`}
             >
               {cat}
@@ -171,7 +171,7 @@ export const PortfolioSection: React.FC = () => {
           ))}
         </div>
 
-        {/* Projects Grid */}
+        {/* Projects Grid with Neon Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map((project: PortfolioItem) => {
             const projectUrl = getPortfolioShareUrl(project.id);
@@ -185,11 +185,11 @@ export const PortfolioSection: React.FC = () => {
               <div
                 key={project.id}
                 onClick={() => handleOpenProjectModal(project)}
-                className="group flex flex-col justify-between rounded-2xl bg-slate-900/70 border border-slate-800/90 hover:border-cyan-500/40 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-cyan-950/20 cursor-pointer"
+                className="group flex flex-col justify-between rounded-2xl bg-white border-2 border-cyan-400 hover:border-cyan-300 overflow-hidden transition-all duration-300 shadow-[0_0_20px_rgba(6,182,212,0.22)] hover:shadow-[0_0_36px_rgba(6,182,212,0.5)] cursor-pointer"
               >
                 <div>
                   {/* Image / Preview Frame */}
-                  <div className="relative h-48 bg-slate-950 overflow-hidden">
+                  <div className="relative h-48 bg-slate-100 overflow-hidden border-b border-cyan-200">
                     {project.imageUrl ? (
                       <img
                         src={project.imageUrl}
@@ -198,19 +198,19 @@ export const PortfolioSection: React.FC = () => {
                         loading="lazy"
                       />
                     ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center bg-gradient-to-br from-slate-950 to-cyan-950/60">
-                        <FolderGit2 className="w-8 h-8 text-cyan-400 mb-2" />
-                        <span className="text-xs font-mono text-slate-300">{project.title}</span>
+                      <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center bg-gradient-to-br from-slate-100 to-cyan-50">
+                        <FolderGit2 className="w-8 h-8 text-cyan-600 mb-2" />
+                        <span className="text-xs font-mono text-slate-600 font-semibold">{project.title}</span>
                       </div>
                     )}
 
                     {/* Category & Status Overlay */}
                     <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-                      <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-950/85 backdrop-blur-sm text-cyan-300 border border-cyan-800/60">
+                      <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/90 backdrop-blur-sm text-cyan-800 border border-cyan-300 shadow-sm">
                         {project.category}
                       </span>
                       <span
-                        className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border backdrop-blur-sm ${getStatusBadge(
+                        className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border backdrop-blur-sm shadow-xs ${getStatusBadge(
                           project.status
                         )}`}
                       >
@@ -219,7 +219,7 @@ export const PortfolioSection: React.FC = () => {
                     </div>
 
                     <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-slate-900/90 text-cyan-300 text-[10px] font-semibold border border-slate-700">
+                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-white/95 text-cyan-800 text-[10px] font-bold border border-cyan-300 shadow-sm">
                         <Maximize2 className="w-3 h-3" /> Zoom
                       </span>
                     </div>
@@ -228,17 +228,17 @@ export const PortfolioSection: React.FC = () => {
                   {/* Body Content */}
                   <div className="p-5">
                     {project.clientName && (
-                      <div className="text-[11px] text-cyan-400 font-semibold mb-1 flex items-center gap-1">
+                      <div className="text-[11px] text-cyan-600 font-bold mb-1 flex items-center gap-1">
                         <Building className="w-3 h-3" />
                         <span>{project.clientName}</span>
                       </div>
                     )}
 
-                    <h3 className="text-lg font-bold text-white group-hover:text-cyan-300 transition-colors">
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-cyan-600 transition-colors">
                       {project.title}
                     </h3>
 
-                    <p className="mt-2 text-xs sm:text-sm text-slate-300 leading-relaxed line-clamp-3">
+                    <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3">
                       {project.description}
                     </p>
 
@@ -248,7 +248,7 @@ export const PortfolioSection: React.FC = () => {
                         {project.technologies.slice(0, 3).map((tech, idx) => (
                           <span
                             key={idx}
-                            className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-950 text-slate-400 border border-slate-800 font-mono"
+                            className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200 font-mono"
                           >
                             {tech}
                           </span>
@@ -260,7 +260,7 @@ export const PortfolioSection: React.FC = () => {
 
                 {/* Footer Link & Share Actions */}
                 <div
-                  className="p-5 pt-0 mt-2 border-t border-slate-800/60 flex items-center justify-between"
+                  className="p-5 pt-0 mt-2 border-t border-slate-100 flex items-center justify-between"
                   onClick={(e) => e.stopPropagation()}
                 >
                   {project.liveUrl ? (
@@ -268,7 +268,7 @@ export const PortfolioSection: React.FC = () => {
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-400 hover:underline"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-600 hover:underline"
                     >
                       <span>{project.buttonLabel || 'Live Preview'}</span>
                       <ExternalLink className="w-3 h-3" />
@@ -277,7 +277,7 @@ export const PortfolioSection: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleOpenProjectModal(project)}
-                      className="text-xs font-semibold text-slate-400 hover:text-white flex items-center gap-1"
+                      className="text-xs font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1"
                     >
                       <Eye className="w-3 h-3" />
                       <span>View Details</span>
@@ -290,8 +290,8 @@ export const PortfolioSection: React.FC = () => {
                       onClick={(e) => handleCopyProjectLink(project, e)}
                       className={`p-1.5 rounded-lg border transition-colors ${
                         isCopied
-                          ? 'bg-emerald-950 text-emerald-400 border-emerald-800'
-                          : 'bg-slate-800 text-slate-300 hover:text-white border-slate-700'
+                          ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
+                          : 'bg-slate-100 text-slate-600 hover:text-slate-900 border-slate-200'
                       }`}
                       title="Copy shareable link"
                     >
@@ -302,7 +302,7 @@ export const PortfolioSection: React.FC = () => {
                       href={whatsappUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-1.5 rounded-lg bg-emerald-950/60 text-emerald-400 border border-emerald-800/80 hover:bg-emerald-900/60 transition-colors"
+                      className="p-1.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-300 hover:bg-emerald-100 transition-colors"
                       title="Share to WhatsApp"
                     >
                       <MessageSquare className="w-3.5 h-3.5" />
@@ -318,15 +318,15 @@ export const PortfolioSection: React.FC = () => {
       {/* Project Lightbox & Details Modal */}
       {selectedProject && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md overflow-y-auto"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm overflow-y-auto"
           role="dialog"
           aria-modal="true"
         >
-          <div className="relative w-full max-w-3xl my-8 rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl overflow-hidden flex flex-col">
+          <div className="relative w-full max-w-3xl my-8 rounded-2xl bg-white border-2 border-cyan-400 shadow-[0_0_40px_rgba(6,182,212,0.35)] overflow-hidden flex flex-col">
             {/* Modal Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/90 sticky top-0 z-10 backdrop-blur-sm">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-white sticky top-0 z-10 backdrop-blur-sm">
               <div className="flex items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-cyan-950 text-cyan-300 border border-cyan-800">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-cyan-50 text-cyan-800 border border-cyan-300">
                   {selectedProject.category}
                 </span>
                 <span
@@ -344,18 +344,18 @@ export const PortfolioSection: React.FC = () => {
                   onClick={() => handleCopyProjectLink(selectedProject)}
                   className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
                     copiedId === selectedProject.id
-                      ? 'bg-emerald-950 text-emerald-300 border-emerald-800'
-                      : 'bg-slate-800 text-slate-200 hover:text-white border-slate-700'
+                      ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                      : 'bg-slate-100 text-slate-700 hover:text-slate-900 border-slate-300'
                   }`}
                 >
                   {copiedId === selectedProject.id ? (
                     <>
-                      <Check className="w-3 h-3 text-emerald-400" />
+                      <Check className="w-3 h-3 text-emerald-600" />
                       <span>Copied Link!</span>
                     </>
                   ) : (
                     <>
-                      <Share2 className="w-3 h-3 text-cyan-400" />
+                      <Share2 className="w-3 h-3 text-cyan-600" />
                       <span>Share Project</span>
                     </>
                   )}
@@ -364,7 +364,7 @@ export const PortfolioSection: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleCloseProjectModal}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                  className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
                   aria-label="Close modal"
                 >
                   <X className="w-5 h-5" />
@@ -376,7 +376,7 @@ export const PortfolioSection: React.FC = () => {
             <div className="p-6 sm:p-8 space-y-6 max-h-[75vh] overflow-y-auto">
               {/* Image Preview / Lightbox */}
               {selectedProject.imageUrl && (
-                <div className="rounded-xl overflow-hidden bg-slate-950 border border-slate-800 max-h-96 flex items-center justify-center">
+                <div className="rounded-xl overflow-hidden bg-slate-100 border border-slate-200 max-h-96 flex items-center justify-center">
                   <img
                     src={selectedProject.imageUrl}
                     alt={selectedProject.title}
@@ -387,33 +387,33 @@ export const PortfolioSection: React.FC = () => {
 
               {/* Title & Metadata */}
               <div>
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                   {selectedProject.title}
                 </h1>
 
-                <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-slate-400 border-b border-slate-800 pb-4">
+                <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-slate-600 border-b border-slate-200 pb-4">
                   {selectedProject.clientName && (
-                    <span className="flex items-center gap-1.5 text-slate-300">
-                      <Building className="w-3.5 h-3.5 text-cyan-400" />
+                    <span className="flex items-center gap-1.5 text-slate-800">
+                      <Building className="w-3.5 h-3.5 text-cyan-600" />
                       <span>Client: <strong>{selectedProject.clientName}</strong></span>
                     </span>
                   )}
                   {selectedProject.completionDate && (
                     <span className="flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                      <Calendar className="w-3.5 h-3.5 text-slate-500" />
                       <span>Timeline: {selectedProject.completionDate}</span>
                     </span>
                   )}
-                  <span className="text-cyan-400 font-mono">Location: Abocho, Kogi State</span>
+                  <span className="text-cyan-600 font-mono font-semibold">Location: Abocho, Kogi State</span>
                 </div>
               </div>
 
               {/* Description */}
               <div className="space-y-3">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">
                   Project Overview & Scope
                 </h4>
-                <p className="text-sm sm:text-base text-slate-200 leading-relaxed whitespace-pre-line">
+                <p className="text-sm sm:text-base text-slate-700 leading-relaxed whitespace-pre-line">
                   {selectedProject.description}
                 </p>
               </div>
@@ -421,14 +421,14 @@ export const PortfolioSection: React.FC = () => {
               {/* Technologies */}
               {selectedProject.technologies && selectedProject.technologies.length > 0 && (
                 <div className="space-y-2">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">
                     Technologies & Skills Applied
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {selectedProject.technologies.map((tech, idx) => (
                       <span
                         key={idx}
-                        className="text-xs font-mono px-3 py-1 rounded-md bg-slate-950 text-cyan-300 border border-slate-800"
+                        className="text-xs font-mono px-3 py-1 rounded-md bg-cyan-50 text-cyan-800 border border-cyan-200 font-semibold"
                       >
                         {tech}
                       </span>
@@ -438,20 +438,20 @@ export const PortfolioSection: React.FC = () => {
               )}
 
               {/* Action Bar in Modal */}
-              <div className="pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+              <div className="pt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
                 {selectedProject.liveUrl ? (
                   <a
                     href={selectedProject.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold transition-all"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs font-bold transition-all shadow-[0_0_12px_rgba(6,182,212,0.3)]"
                   >
                     <span>Visit Live Project</span>
                     <ExternalLink className="w-3.5 h-3.5" />
                   </a>
                 ) : (
-                  <span className="text-xs text-slate-400 flex items-center gap-1.5">
-                    <Clock className="w-4 h-4 text-cyan-400" />
+                  <span className="text-xs text-slate-500 flex items-center gap-1.5">
+                    <Clock className="w-4 h-4 text-cyan-600" />
                     <span>Project deployed or maintained by LivingTech</span>
                   </span>
                 )}
@@ -463,9 +463,9 @@ export const PortfolioSection: React.FC = () => {
                   )}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-emerald-600/20 border border-emerald-500/40 text-emerald-400 hover:bg-emerald-600/30 text-xs font-semibold"
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-emerald-50 border border-emerald-400 text-emerald-700 hover:bg-emerald-100 text-xs font-bold shadow-xs"
                 >
-                  <MessageSquare className="w-4 h-4" />
+                  <MessageSquare className="w-4 h-4 text-emerald-600" />
                   <span>Ask about this project</span>
                 </a>
               </div>

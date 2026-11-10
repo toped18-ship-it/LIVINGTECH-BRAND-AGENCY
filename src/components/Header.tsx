@@ -34,8 +34,8 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal, currentRoute =
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-slate-950/95 backdrop-blur-md border-b border-slate-800/80 shadow-lg shadow-black/20 py-3'
-          : 'bg-slate-950/80 backdrop-blur-sm border-b border-slate-800/40 py-4'
+          ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-md shadow-slate-200/50 py-3'
+          : 'bg-white/90 backdrop-blur-sm border-b border-slate-200/70 py-4'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -47,14 +47,14 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal, currentRoute =
             className="group flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 rounded-lg p-1 cursor-pointer"
             aria-label="LivingTech Brand Agency Home"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-700 flex items-center justify-center text-white font-extrabold text-xl shadow-md shadow-cyan-500/20 group-hover:scale-105 transition-transform">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-700 flex items-center justify-center text-white font-extrabold text-xl shadow-[0_0_15px_rgba(6,182,212,0.4)] group-hover:scale-105 transition-transform">
               <span className="tracking-tighter">LT</span>
             </div>
             <div className="flex flex-col">
-              <span className="font-extrabold text-base sm:text-lg tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase font-mono">
+              <span className="font-extrabold text-base sm:text-lg tracking-wider text-slate-900 group-hover:text-cyan-600 transition-colors uppercase font-mono">
                 LIVINGTECH
               </span>
-              <span className="text-[10px] sm:text-xs text-cyan-400/90 font-medium tracking-widest uppercase">
+              <span className="text-[10px] sm:text-xs text-cyan-600 font-semibold tracking-widest uppercase">
                 BRAND AGENCY
               </span>
             </div>
@@ -71,8 +71,8 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal, currentRoute =
                   onClick={(e) => handleNavClick(link.path, e)}
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-cyan-400 cursor-pointer ${
                     isActive
-                      ? 'text-cyan-300 bg-cyan-950/80 border border-cyan-700/80 font-bold shadow-sm shadow-cyan-500/10'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent'
+                      ? 'text-cyan-700 bg-cyan-50 border-2 border-cyan-400 font-bold shadow-[0_0_12px_rgba(6,182,212,0.3)]'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 border-2 border-transparent'
                   }`}
                 >
                   {link.name}
@@ -87,17 +87,17 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal, currentRoute =
               href={whatsappGeneralUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-lg bg-emerald-600/15 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-600/25 hover:border-emerald-500/50 transition-all focus:outline-none focus:ring-2 focus:ring-emerald-400"
+              className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-lg bg-emerald-50 border border-emerald-400 text-emerald-700 hover:bg-emerald-100 shadow-[0_0_12px_rgba(16,185,129,0.25)] transition-all focus:outline-none focus:ring-2 focus:ring-emerald-400"
               title="Chat with LivingTech on WhatsApp"
             >
-              <MessageSquare className="w-4 h-4" />
+              <MessageSquare className="w-4 h-4 text-emerald-600" />
               <span>WhatsApp</span>
             </a>
 
             <button
               onClick={() => onOpenQuoteModal()}
               type="button"
-              className="inline-flex items-center gap-2 px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-semibold shadow-md shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all focus:outline-none focus:ring-2 focus:ring-cyan-300 active:scale-95"
+              className="inline-flex items-center gap-2 px-4 py-2 text-xs sm:text-sm font-bold rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white shadow-[0_0_16px_rgba(6,182,212,0.4)] hover:shadow-[0_0_24px_rgba(6,182,212,0.6)] transition-all focus:outline-none focus:ring-2 focus:ring-cyan-300 active:scale-95 cursor-pointer"
             >
               <span>Get a Quote</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -109,14 +109,14 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal, currentRoute =
             <button
               onClick={() => onOpenQuoteModal()}
               type="button"
-              className="px-3 py-1.5 text-xs font-semibold rounded-md bg-cyan-500 text-slate-950 font-semibold"
+              className="px-3 py-1.5 text-xs font-bold rounded-md bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-[0_0_10px_rgba(6,182,212,0.3)]"
             >
               Quote
             </button>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               type="button"
-              className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/80 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+              className="p-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-cyan-400"
               aria-label={isMobileMenuOpen ? 'Close Menu' : 'Open Menu'}
               aria-expanded={isMobileMenuOpen}
             >
@@ -129,7 +129,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal, currentRoute =
       {/* Accessible Collapsible Mobile Menu */}
       {isMobileMenuOpen && (
         <div
-          className="lg:hidden bg-slate-950 border-b border-slate-800 shadow-2xl px-4 pt-3 pb-6 transition-all"
+          className="lg:hidden bg-white border-b border-slate-200 shadow-2xl px-4 pt-3 pb-6 transition-all"
           id="mobile-menu"
         >
           <nav className="flex flex-col space-y-1" aria-label="Mobile Navigation">
@@ -142,21 +142,21 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal, currentRoute =
                   onClick={(e) => handleNavClick(link.path, e)}
                   className={`px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center justify-between cursor-pointer ${
                     isActive
-                      ? 'text-cyan-300 bg-cyan-950/80 font-bold border border-cyan-800/80'
-                      : 'text-slate-200 hover:text-cyan-400 hover:bg-slate-900'
+                      ? 'text-cyan-700 bg-cyan-50 font-bold border-2 border-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.25)]'
+                      : 'text-slate-700 hover:text-cyan-600 hover:bg-slate-50'
                   }`}
                 >
                   <span>{link.name}</span>
-                  {isActive && <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />}
+                  {isActive && <span className="w-2 h-2 rounded-full bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,0.8)]" />}
                 </a>
               );
             })}
           </nav>
 
-          <div className="mt-4 pt-4 border-t border-slate-800/80 flex flex-col gap-3">
-            <div className="flex items-center justify-between text-xs text-slate-400 px-1">
+          <div className="mt-4 pt-4 border-t border-slate-200 flex flex-col gap-3">
+            <div className="flex items-center justify-between text-xs text-slate-600 px-1">
               <span>Abocho, Kogi State</span>
-              <a href={`tel:${BUSINESS_CONFIG.contact.phone}`} className="text-cyan-400 hover:underline flex items-center gap-1">
+              <a href={`tel:${BUSINESS_CONFIG.contact.phone}`} className="text-cyan-600 hover:underline flex items-center gap-1 font-semibold">
                 <Phone className="w-3 h-3" />
                 {BUSINESS_CONFIG.contact.phone}
               </a>
@@ -168,7 +168,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal, currentRoute =
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 text-sm font-medium hover:bg-emerald-600/30"
+                className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-400 text-sm font-semibold hover:bg-emerald-100 shadow-[0_0_10px_rgba(16,185,129,0.2)]"
               >
                 <MessageSquare className="w-4 h-4" />
                 WhatsApp
@@ -179,7 +179,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenQuoteModal, currentRoute =
                   setIsMobileMenuOpen(false);
                   onOpenQuoteModal();
                 }}
-                className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-sm font-semibold"
+                className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-bold shadow-[0_0_14px_rgba(6,182,212,0.35)]"
               >
                 <span>Get a Quote</span>
                 <ArrowRight className="w-4 h-4" />
